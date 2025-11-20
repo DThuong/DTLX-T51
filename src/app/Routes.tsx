@@ -4,6 +4,7 @@ import Home from '../pages/Home';
 import About from '../pages/About';
 import Course from '../pages/Course';
 import News from '../pages/News';
+import ErrorPage from '../pages/ErrorPage';
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         </Route>
 
         {/** Các route khác không dùng layout */}
-        <Route path='*' element={<div>404 Not Found</div>}/>
+        <Route path='*' element={<ErrorPage/>}/>
       </Routes>
     </>
   )
