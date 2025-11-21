@@ -1,9 +1,10 @@
 import React from 'react'
+import CarViewer from '../components/CarViewer'
 
 const Home = () => {
   return (
     <div>
-      Trang Chủ
+      <CarViewer />
     </div>
   )
 }

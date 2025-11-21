@@ -5,7 +5,7 @@ const Layout = () => {
   return (
     <div>
         <Header />
-             <main className="mt-3 mb-3">
+             <main>
                 <Outlet /> {/* nội dung thay đổi theo từng route */}
             </main>
         <Footer />

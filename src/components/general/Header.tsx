@@ -1,47 +1,8 @@
 import React, { useState, useEffect, useRef} from 'react';
 import { MdEmail } from "react-icons/md";
 import { FaClock, FaUserCircle, FaChevronDown } from "react-icons/fa";
-
-const MENU = [
-  { id: 'home', label: 'Trang Chủ', to: '/' },
-  {
-    id: 'about',
-    label: 'Giới Thiệu',
-    to: '/gioi-thieu',
-    children: [
-      { id: 'team', label: 'Đội ngũ', to: '/gioi-thieu/doi-ngu' },
-      { id: 'history', label: 'Lịch sử', to: '/gioi-thieu/lich-su' },
-      { id: 'contact', label: 'Liên hệ', to: '/gioi-thieu/lien-he' },
-    ],
-  },
-  {
-    id: 'courses',
-    label: 'Khóa Học Lái Xe',
-    to: '/khoa-hoc',
-    children: [
-      { id: 'car', label: 'Hạng B2', to: '/khoa-hoc/b2' },
-      { id: 'motor', label: 'Hạng A1', to: '/khoa-hoc/a1' },
-      { id: 'package', label: 'Gói trọn gói', to: '/khoa-hoc/tron-goi' },
-    ],
-  },
-  {
-    id: 'news',
-    label: 'Tin Tức',
-    to: '/tin-tuc',
-    children: [
-      { id: 'news-all', label: 'Tất cả', to: '/tin-tuc' },
-      { id: 'promotion', label: 'Khuyến mãi', to: '/tin-tuc/khuyen-mai' },
-      { id: 'tips', label: 'Mẹo lái xe', to: '/tin-tuc/meo-lai-xe' },
-    ],
-  },
-];
-
-const USER_MENU = [
-  { id: 'profile', label: 'Hồ sơ', to: '/user/profile' },
-  { id: 'settings', label: 'Cài đặt', to: '/user/settings' },
-  { id: 'logout', label: 'Đăng xuất', to: '/logout' },
-];
-
+import { Link, NavLink } from 'react-router-dom';
+import { MENU, USER_MENU } from '../../config/menuSections';
 
 const Header = () => {
   const [activeMenu, setActiveMenu] = useState<string>('home');
@@ -50,7 +11,7 @@ const Header = () => {
   const userRef = useRef<HTMLDivElement>(null);
 
 
-    // Click ngoài để đóng dropdown user
+  // Click ngoài để đóng dropdown user
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (userRef.current && !userRef.current.contains(event.target as Node)) {
@@ -105,12 +66,8 @@ const Header = () => {
                     onMouseEnter={() => setHoveredMenu(menu.id)}
                     onMouseLeave={() => setHoveredMenu(null)}
                   >
-                    <a
-                      href={menu.to}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleMenuClick(menu.id);
-                      }}
+                    <NavLink
+                      to={menu.to}
                       className={`
                         flex items-center gap-1 px-3 py-2 rounded-lg font-medium text-base
                         transition-all duration-300 ease-in-out
@@ -129,14 +86,14 @@ const Header = () => {
                           }`}
                         />
                       )}
-                    </a>
+                    </NavLink>
 
                     {/* Dropdown Menu */}
                     {menu.children && (
                       <div 
                         className={`
                           absolute top-full left-0 mt-1 w-64 bg-blue-200 shadow-lg
-                          transition-all duration-300 ease-in-out origin-top
+                          transition-all duration-300 ease-in-out origin-top z-99
                           ${hoveredMenu === menu.id 
                             ? 'opacity-100 visible scale-y-100 translate-y-0' 
                             : 'opacity-0 invisible scale-y-95 -translate-y-2'
@@ -146,9 +103,9 @@ const Header = () => {
                         <ul className='p-0'>
                           {menu.children.map((child) => (
                             <li key={child.id} className="group relative">
-                            <a
-                                href={child.to}
-                                onClick={(e) => e.preventDefault()}
+                            <NavLink
+                                to={child.to}
+                                // onClick={(e) => e.preventDefault()}
                                 className="
                                 flex items-center w-full 
                                 px-5 py-3 text-gray-700 text-sm font-medium
@@ -162,7 +119,7 @@ const Header = () => {
                                 >
                                 {child.label}
                                 </span>
-                            </a>
+                            </NavLink>
                             </li>
                           ))}
                         </ul>
@@ -188,8 +145,8 @@ const Header = () => {
                 {/* User Dropdown */}
                 <div
                 className={`
-                  absolute left-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl
-                  border border-gray-200 overflow-hidden
+                  absolute left-0 top-full mt-2 w-48 bg-blue-200 shadow-xl
+                  border border-gray-200 overflow-hidden z-99
                   transition-all duration-300 ease-in-out origin-top-right
                   ${userDropdownOpen 
                     ? 'opacity-100 visible scale-y-100 translate-y-0'
@@ -200,17 +157,16 @@ const Header = () => {
                 <ul className='p-0 mb-0'>
                   {USER_MENU.map((item) => (
                     <li key={item.id} className="group relative">
-                      <a
-                        href={item.to}
-                        onClick={(e) => e.preventDefault()}
+                      <NavLink
+                        to={item.to}
                         className="
                           flex items-center w-full px-4 py-3 text-gray-700 text-sm font-medium
-                          hover:bg-blue-50 hover:text-blue-600
+                          hover:bg-blue-50 hover:text-blue-600 hover:border-l-4 hover:border-blue-600
                           transition-colors duration-200 ease-in-out
                         "
                       >
                         {item.label}
-                      </a>
+                      </NavLink>
                     </li>
                   ))}
                 </ul>
