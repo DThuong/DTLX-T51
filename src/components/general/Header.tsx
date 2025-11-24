@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef} from 'react';
 import { MdEmail } from "react-icons/md";
 import { FaClock, FaUserCircle, FaChevronDown } from "react-icons/fa";
 import { Link, NavLink } from 'react-router-dom';
-import { MENU, USER_MENU } from '../../config/menuSections';
+import { MENU, USER_MENU } from '../../data/menuSections';
 
 const Header = () => {
   const [activeMenu, setActiveMenu] = useState<string>('home');
@@ -49,9 +49,9 @@ const Header = () => {
         <div className='flex items-center justify-between'>
           {/* Logo */}
           <div className="flex shrink-0">
-            <p className='text-3xl text-blue-900 font-bold mb-0 transition-colors cursor-pointer'>
+            <Link to="/" className='text-decoration-none text-3xl text-blue-900 font-bold mb-0 transition-colors cursor-pointer'>
               Đào Tạo Lái Xe Tuấn Long
-            </p>
+            </Link>
           </div>
 
           {/* Navigation & Login */}
@@ -105,7 +105,6 @@ const Header = () => {
                             <li key={child.id} className="group relative">
                             <NavLink
                                 to={child.to}
-                                // onClick={(e) => e.preventDefault()}
                                 className="
                                 flex items-center w-full 
                                 px-5 py-3 text-gray-700 text-sm font-medium

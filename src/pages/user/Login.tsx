@@ -2,12 +2,6 @@ import React, { useState } from 'react';
 // Import icons từ lucide-react (hoặc thư viện icon bạn đang sử dụng)
 import { FaGoogle, FaFacebook } from "react-icons/fa";
 
-// Khởi tạo các biến global (dummy values cho môi trường Canvas)
-// Trong ứng dụng thực tế, bạn sẽ khởi tạo Firebase/Firestore ở đây.
-const __app_id = 'login-app-123'; 
-const __firebase_config = '{}'; 
-const __initial_auth_token = ''; 
-
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -62,41 +56,37 @@ const Login = () => {
         {/* ======================================================= */}
         {/* === SOCIAL LOGIN BUTTONS === */}
         {/* ======================================================= */}
-        <div className="space-y-3">
-            {/* Nút Google */}
+        <div className="flex flex-column gap-2 space-y-3">
             <button
                 type="button"
                 onClick={() => handleSocialLogin('Google')}
-                className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg shadow-sm text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 transition duration-150"
+                className="w-full flex items-center justify-center gap-2 py-3 border rounded-lg shadow-sm text-sm font-semibold text-gray-700 bg-white hover:bg-gray-700 transition duration-300 transform hover:-translate-y-1 hover:scale-105"
             >
-                {/* Sử dụng Chrome icon với màu Google blue */}
-                <FaGoogle className="w-5 h-5 mr-2 text-blue-500" />
+                <FaGoogle className="w-5 h-5 text-blue-500" />
                 {isLogin ? 'Đăng nhập bằng Google' : 'Đăng ký bằng Google'}
             </button>
 
-            {/* Nút Facebook */}
             <button
                 type="button"
                 onClick={() => handleSocialLogin('Facebook')}
-                className="w-full flex items-center justify-center py-3 rounded-lg shadow-sm text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition duration-150"
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-lg shadow-sm text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition duration-300 transform hover:-translate-y-1 hover:scale-105"
             >
-                {/* Sử dụng Facebook icon với màu trắng */}
                 <FaFacebook className="w-5 h-5 mr-2" />
                 {isLogin ? 'Đăng nhập bằng Facebook' : 'Đăng ký bằng Facebook'}
             </button>
         </div>
 
         {/* Dòng chữ "Hoặc" để chia tách form */}
-        <div className="relative flex items-center">
-            <div className="flex-grow border-t border-gray-200"></div>
-            <span className="flex-shrink mx-4 text-gray-400 text-sm">Hoặc tiếp tục với Email</span>
-            <div className="flex-grow border-t border-gray-200"></div>
+        <div className="relative flex items-center mt-2 mb-3">
+            <div className="grow border-t border-gray-200"></div>
+            <span className="shrink mx-4 text-gray-400 text-sm">Hoặc tiếp tục với Email</span>
+            <div className="grow border-t border-gray-200"></div>
         </div>
 
         {/* ======================================================= */}
         {/* === FORM EMAIL/PASSWORD === */}
         {/* ======================================================= */}
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form className="flex flex-column gap-2.5 space-y-4" onSubmit={handleSubmit}>
           
           {/* Trường Email */}
           <div>
@@ -109,7 +99,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+              className="outline-none w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
               placeholder="tenban@example.com"
             />
           </div>
@@ -125,7 +115,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
+              className="outline-none w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 shadow-sm"
               placeholder="Nhập mật khẩu"
             />
           </div>
@@ -151,7 +141,7 @@ const Login = () => {
           {/* Nút Submit Email/Password */}
           <button
             type="submit"
-            className="w-full py-3 mt-5 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-[1.01]"
+            className="w-full py-3 mt-3 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-[1.01]"
           >
             {isLogin ? 'Đăng nhập' : 'Hoàn tất Đăng ký'}
           </button>
