@@ -235,8 +235,8 @@ useEffect(() => {
             {/* Hamburger Menu Button */}
             <button
               onClick={() => setMobileMenuOpen((prev) => !prev)}
-              className='flex items-center justify-center w-10 h-10 rounded-lg
-                         bg-blue-600 text-white
+              className='flex items-center justify-center w-15 h-15 rounded-lg
+                          text-blue-600
                          transition-all duration-300 ease-in-out
                          hover:bg-blue-700 active:scale-95'
               aria-label="Toggle menu"
