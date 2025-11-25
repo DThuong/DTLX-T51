@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -81,7 +81,7 @@ const CarViewer: React.FC = () => {
 
     // Loading Manager để track progress
     const loadingManager = new THREE.LoadingManager();
-    loadingManager.onProgress = (url, loaded, total) => {
+    loadingManager.onProgress = (_url,loaded, total) => {
       const progress = (loaded / total) * 100;
       if (isComponentMounted) {
         setLoadingProgress(Math.round(progress));

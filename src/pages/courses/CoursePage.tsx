@@ -1,5 +1,4 @@
-import React, { use } from 'react';
-import { useParams, Outlet, Link } from 'react-router-dom';
+import { useParams, Outlet } from 'react-router-dom';
 import { COURSE_SECTIONS } from '../../data/courseSections';
 import ErrorCoursePage from '../ErrorCoursePage';
 import SubNavLayoutCourse from './SubnavLayoutCourse';

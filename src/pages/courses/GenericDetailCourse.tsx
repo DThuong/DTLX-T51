@@ -1,5 +1,5 @@
 // src/pages/GenericDetail.tsx
-import React, { type JSX } from 'react';
+import { type JSX } from 'react';
 import { useParams } from 'react-router-dom';
 import { COURSE_SECTIONS } from '../../data/courseSections';
 import ErrorCoursePage from '../ErrorCoursePage';
