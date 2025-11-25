@@ -6,20 +6,44 @@ const Footer = () => {
     <div className='bg-blue-200'>
         <div className='footer-head flex justify-center bg-blue-600'>
             <nav>
-                <ul className='grid grid-cols-1 sm:grid-cols-4 gap-3 p-3 text-base sm:text-lg font-semibold text-white mb-0'>
-                    <li className="border px-5 py-2 bg-linear-to-b from-blue-200 to-purple-300 flex items-center justify-center">
-                        <a className='hover:opacity-40 text-center w-full' href="">Đăng Ký Online</a>
-                    </li>
-                    <li className="border px-5 py-2 bg-linear-to-b from-blue-200 to-purple-300 flex items-center justify-center">
-                        <a className='hover:opacity-40 text-center w-full' href="">Thi Thử Lý Thuyết (GPLX)</a>
-                    </li>
-                    <li className="border px-5 py-2 bg-linear-to-b from-blue-200 to-purple-300 flex items-center justify-center">
-                        <a className='hover:opacity-40 text-center w-full' href="">Thi Thử Mô Phỏng</a>
-                    </li>
-                    <li className="border px-5 py-2 bg-linear-to-b from-blue-200 to-purple-300 flex items-center justify-center">
-                        <a className='hover:opacity-40 text-center w-full' href="">Tài Liệu Học Tập</a>
-                    </li>
-                </ul>
+                <ul className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-3 text-base sm:text-lg font-semibold text-white mb-0">
+  {[
+    { label: "Đăng Ký Online", href: "#" },
+    { label: "Thi Thử Lý Thuyết (GPLX)", href: "#" },
+    { label: "Thi Thử Mô Phỏng", href: "#" },
+    { label: "Tài Liệu Học Tập", href: "#" },
+  ].map((item, index) => (
+    <li
+      key={index}
+      className="
+        relative overflow-hidden rounded-xl
+        shadow-lg
+        bg-linear-to-b from-blue-500 via-purple-500 to-purple-500
+        transition-transform duration-300
+        hover:scale-105 hover:shadow-2xl
+      "
+    >
+      <a
+        href={item.href}
+        className="
+          block w-full px-5 py-3 text-center
+          text-white font-semibold
+          relative z-10
+          transition-opacity duration-300
+          hover:opacity-90
+        "
+      >
+        {item.label}
+      </a>
+      {/* Optional: overlay gradient animation */}
+      <span className="
+        absolute inset-0 bg-linear-to-r from-white/10 via-white/20 to-white/10
+        opacity-0 hover:opacity-30
+        transition-opacity duration-300
+      "></span>
+    </li>
+  ))}
+</ul>
             </nav>
         </div>
 

@@ -86,7 +86,7 @@ const SignupDetailForm: React.FC<RegistrationFormProps> = ({ onClose }) => {
     // <div className='relative w-full p-2'>
     <>
          {/** Form */}
-        <div className="relative max-w-3xl mx-auto bg-white/20 backdrop-blur-md shadow-lg mt-3 rounded-lg p-4">
+        <div className="relative max-w-3xl mx-auto bg-white/20 backdrop-blur-md shadow-lg rounded-lg p-4">
             <div className="mb-6">
                 <div className="inline-flex items-center justify-center text-red-800 animate-bounce rounded-2xl bg-white px-4 py-2 text-sm font-semibold mb-2">Liên hệ ngay để được tư vấn</div>
                 <h2 className="text-2xl font-bold text-purple-700 mb-2">

@@ -195,7 +195,7 @@ const NewsSection: React.FC<{
         {title}
       </h2>
 
-      <div className="flex flex-col gap-3 flex-1 space-y-4 mb-4">
+      <div className="flex flex-col gap-3 flex-1 space-y-4 mb-2">
         {displayNews.map((news, index) => (
           <NewsCard key={news.id} news={news} index={index} />
         ))}

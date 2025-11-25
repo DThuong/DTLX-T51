@@ -11,7 +11,23 @@ const Header = () => {
   const [mobileSubmenuOpen, setMobileSubmenuOpen] = useState<string | null>(null);
   const userRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const [scrollDir, setScrollDir] = useState<"up" | "down">("up");
+  const [lastScrollY, setLastScrollY] = useState(0);
 
+// hiệu ứng scroll của header
+useEffect(() => {
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+    if (currentScrollY > lastScrollY && currentScrollY > 50) {
+      setScrollDir("down"); // scroll xuống
+    } else {
+      setScrollDir("up"); // scroll lên
+    }
+    setLastScrollY(currentScrollY);
+  };
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, [lastScrollY]);
   // Click ngoài để đóng dropdown user
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -51,11 +67,20 @@ const Header = () => {
   }, [mobileMenuOpen]);
 
   return (
-    <div className='bg-linear-to-b from-blue-50 to-blue-100 shadow-md'>
+    <>
+    <div className='h-[72px] md:h-[100px] lg:h-[125px]'></div>
+
+    <div 
+        className={`
+          fixed top-0 left-0 right-0 z-30 bg-white shadow-md
+          transition-transform duration-300 ease-in-out
+          ${scrollDir === "down" ? "-translate-y-full" : "translate-y-0"}
+        `}
+      >
       {/* Top Header - Ẩn trên mobile */}
       <div className='bg-blue-600 text-white hidden md:block'>
         <div className='max-w-7xl mx-auto'>
-          <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center gap-3 sm:gap-6 px-4 sm:px-6 py-3 text-xs sm:text-sm">
+          <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center gap-3 sm:gap-6 sm:px-6 py-3 text-xs sm:text-sm">
             <div className="flex items-center gap-2 hover:text-blue-200 transition-colors">
               <MdEmail size={18} className="shrink-0" />
               <span className='font-medium break-all'>phantrungnam22162018@gmail.com</span>
@@ -221,11 +246,12 @@ const Header = () => {
           </div>
         </div>
       </div>
+    </div>
 
-      {/* Mobile Menu Overlay */}
+          {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <div 
-          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-60"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
@@ -234,7 +260,7 @@ const Header = () => {
       <div
         ref={mobileMenuRef}
         className={`
-          lg:hidden fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-50
+          lg:hidden fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-70
           transition-transform duration-300 ease-in-out overflow-y-auto
           ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}
         `}
@@ -259,29 +285,6 @@ const Header = () => {
             </div>
           </div>
           
-          {/* User Menu Items */}
-          {/* <ul className="space-y-1 mt-3">
-            {USER_MENU.map((item) => (
-              <li key={item.id}>
-                <NavLink
-                  to={item.to}
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    setUserDropdownOpen(false);
-                  }}
-                  className={({ isActive }) => `
-                    flex items-center px-3 py-2 rounded-lg text-sm font-medium
-                    transition-colors duration-200
-                    ${isActive
-                      ? 'text-blue-600 bg-white shadow-sm'
-                      : 'text-gray-700 hover:bg-white hover:text-blue-600'}
-                  `}
-                >
-                  {item.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul> */}
         </div>
 
         {/* Mobile Menu Items */}
@@ -365,7 +368,7 @@ const Header = () => {
           </ul>
         </nav>
       </div>
-    </div>
+    </>
   );
 };
 
