@@ -16,10 +16,9 @@ const FlashSaleSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const headerRef = useRef<HTMLDivElement | null>(null);
   const timerRef = useRef<HTMLDivElement | null>(null);
-  // đúng kiểu: mỗi item có thể null
   const coursesRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  // countdown unchanged
+  // countdown
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
@@ -42,7 +41,7 @@ const FlashSaleSection: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // helper: wait images inside container to load (prevents ScrollTrigger position bugs)
+  // helper: wait images loaded
   const waitImagesLoaded = async (root: HTMLElement | null) => {
     if (!root) return;
     const imgs = Array.from(root.querySelectorAll("img"));
@@ -59,26 +58,18 @@ const FlashSaleSection: React.FC = () => {
   };
 
   useEffect(() => {
-    // guard for SSR / safety
     if (!containerRef.current) return;
 
     let ctx = gsap.context(() => {
-      // wait images loaded first, then setup animations
       (async () => {
         await waitImagesLoaded(containerRef.current);
 
-        // collect valid elements safely
         const headerEl = headerRef.current as HTMLDivElement | null;
         const timerEl = timerRef.current as HTMLDivElement | null;
         const courseEls = coursesRef.current.filter(Boolean) as HTMLDivElement[];
 
-        // optional: if you prefer selector-based:
-        // const courseEls = gsap.utils.toArray<HTMLDivElement>(".fs-course");
-
-        // set defaults
         gsap.set([headerEl, timerEl, courseEls], { autoAlpha: 1 });
 
-        // create timeline scoped to container
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: containerRef.current,
@@ -91,12 +82,9 @@ const FlashSaleSection: React.FC = () => {
             onEnterBack: () => {
               tl.restart();
             },
-            // scrub: 0.6, // uncomment if you want scroll-linked (mượt theo scroll)
-            // markers: true
           },
         });
 
-        // header
         if (headerEl) {
           tl.fromTo(
             headerEl,
@@ -105,7 +93,6 @@ const FlashSaleSection: React.FC = () => {
           );
         }
 
-        // timer
         if (timerEl) {
           tl.fromTo(
             timerEl,
@@ -115,7 +102,6 @@ const FlashSaleSection: React.FC = () => {
           );
         }
 
-        // courses (filter empty)
         if (courseEls.length) {
           tl.fromTo(
             courseEls,
@@ -132,116 +118,150 @@ const FlashSaleSection: React.FC = () => {
           );
         }
 
-        // ensure ScrollTrigger knows layout sizes after images loaded
         ScrollTrigger.refresh();
       })();
     }, containerRef);
 
-    // cleanup
     return () => {
       ctx.revert();
-      // ensure kill leftover triggers
       ScrollTrigger.getAll().forEach((s) => s.kill());
     };
   }, []);
 
-  return (
+   return (
+<div
+  className="bg-linear-to-r from-blue-400 to-purple-500 rounded-xl sm:rounded-2xl shadow-2xl p-3 md:p-5 flex flex-col items-center"
+  ref={containerRef}
+>
+  {/* Header - Flexbox responsive */}
+  <div className="flex flex-col items-center lg:flex-row lg:justify-between  gap-3 sm:gap-4 mb-4 sm:mb-6">
+    {/* Title Section */}
     <div
-      className="bg-linear-to-br from-blue-900 to-grey-400 rounded-2xl shadow-2xl p-5"
-      ref={containerRef}
+      className="flex flex-col sm:flex-row items-center lg:items-start gap-3 lg:flex-1"
+      ref={headerRef}
     >
-      {/* Header */}
-      <div className="flex flex-col md:flex-row items-start justify-between mb-3 gap-4">
-        <div className="flex items-start gap-3" ref={headerRef}>
-          <div className="bg-white p-2 rounded-full animate-pulse">
-            <Flame className="w-8 h-8 text-red-500" />
-          </div>
-          <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-white flex items-center gap-2">
-              GIẢM SỐC ĐĂNG KÝ HÔM NAY GIẢM NGAY 1.000.000 VNĐ
-              <span className="bg-red-400 text-sm text-white px-2 py-1 rounded-full animate-bounce">
-                Hot!
-              </span>
-            </h2>
-            <p className="text-white/90 text-md mt-1">
-              🎓 Hơn 100+ học viên đã ghi danh • Giảm 1.000.000₫ cho học viên ghi danh hôm nay.
-            </p>
-          </div>
-        </div>
-
-        {/* Countdown Timer */}
-        <div
-          className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full"
-          ref={timerRef}
-        >
-          <span className="text-white font-semibold text-sm">Kết thúc sau</span>
-          <div className="flex gap-1">
-            <div className="bg-red-500 text-white px-3 py-2 rounded-lg font-bold text-lg min-w-[50px] text-center animate-pulse">
-              {String(timeLeft.hours).padStart(2, "0")}
-              <div className="text-xs font-normal">Giờ</div>
-            </div>
-            <span className="text-white font-bold text-2xl">:</span>
-            <div className="bg-blue-500 text-white px-3 py-2 rounded-lg font-bold text-lg min-w-[50px] text-center animate-pulse">
-              {String(timeLeft.minutes).padStart(2, "0")}
-              <div className="text-xs font-normal">Phút</div>
-            </div>
-            <span className="text-white font-bold text-2xl">:</span>
-            <div className="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-lg min-w-[50px] text-center animate-pulse">
-              {String(timeLeft.seconds).padStart(2, "0")}
-              <div className="text-xs font-normal">Giây</div>
-            </div>
-          </div>
-        </div>
+      <div className="bg-white p-2 sm:p-2.5 rounded-full animate-pulse shrink-0">
+        <Flame className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-red-500" />
       </div>
 
-      {/* Courses Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+      <div className="flex-1 text-center lg:text-left">
+        <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-white flex flex-wrap items-center justify-center lg:justify-start gap-2">
+          <span className="leading-tight">
+            GIẢM SỐC ĐĂNG KÝ HÔM NAY GIẢM NGAY 1.000.000 VNĐ
+          </span>
+          <span className="bg-red-500 text-xs sm:text-sm text-white px-2 py-1 rounded-full animate-pulse whitespace-nowrap">
+            Hot!
+          </span>
+        </h2>
+        <p className="text-white text-xs sm:text-sm md:text-base mt-1 sm:m-0">
+          🎓 Hơn 100+ học viên đã ghi danh • Giảm 1.000.000₫ cho học viên ghi danh hôm nay.
+        </p>
+      </div>
+    </div>
+
+    {/* Countdown Timer - Flexbox responsive */}
+    <div
+      className="flex flex-row items-center justify-center gap-2 bg-white/20 backdrop-blur-md px-3 sm:px-4 py-2 sm:py-3 rounded-lg lg:rounded-full self-center lg:self-auto"
+      ref={timerRef}
+    >
+      <span className="text-white font-semibold text-xs sm:text-sm whitespace-nowrap">
+        Kết thúc sau
+      </span>
+
+      <div className="flex gap-1 sm:gap-2">
+        {/* Hours */}
+        <div className="flex flex-col items-center">
+          <div className="bg-red-500 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-md sm:rounded-lg font-bold text-sm sm:text-base md:text-lg lg:text-xl min-w-[35px] sm:min-w-[45px] md:min-w-[50px] text-center animate-bounce">
+            {String(timeLeft.hours).padStart(2, "0")}
+          </div>
+          <div className="text-[9px] sm:text-[10px] md:text-xs font-normal text-white mt-0.5">Giờ</div>
+        </div>
+
+        <span className="text-white font-bold text-base sm:text-lg md:text-xl lg:text-2xl self-center leading-none">:</span>
+
+        {/* Minutes */}
+        <div className="flex flex-col items-center">
+          <div className="bg-blue-500 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-md sm:rounded-lg font-bold text-sm sm:text-base md:text-lg lg:text-xl min-w-[35px] sm:min-w-[45px] md:min-w-[50px] text-center animate-bounce">
+            {String(timeLeft.minutes).padStart(2, "0")}
+          </div>
+          <div className="text-[9px] sm:text-[10px] md:text-xs font-normal text-white/90 mt-0.5">Phút</div>
+        </div>
+
+        <span className="text-white font-bold text-base sm:text-lg md:text-xl lg:text-2xl self-center leading-none">:</span>
+
+        {/* Seconds */}
+        <div className="flex flex-col items-center">
+          <div className="bg-green-500 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-md sm:rounded-lg font-bold text-sm sm:text-base md:text-lg lg:text-xl min-w-[35px] sm:min-w-[45px] md:min-w-[50px] text-center animate-bounce">
+            {String(timeLeft.seconds).padStart(2, "0")}
+          </div>
+          <div className="text-[9px] sm:text-[10px] md:text-xs font-normal text-white/90 mt-0.5">Giây</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+      {/* Courses Grid - Responsive Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 sm:gap-4">
         {courses.map((course, index) => (
           <div
             key={course.id}
-            // lưu luôn null nếu không có element (giữ index mapping)
-            ref={(el) => { coursesRef.current[index] = el;}}
-            className="fs-course bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group cursor-pointer"
+            ref={(el) => { coursesRef.current[index] = el; }}
+            className="fs-course bg-white rounded-lg sm:rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group cursor-pointer"
             style={{ animationDelay: `${index * 100}ms` }}
           >
-            {/* Image */}
-            <div className="relative overflow-hidden h-48">
+            {/* Image Container */}
+            <div className="relative overflow-hidden h-40 sm:h-44 md:h-48">
               <img
                 src={course.image}
                 alt={course.title}
-                className="shadow-lg w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
-              <div className="absolute top-4 right-3 bg-red-600 text-white px-3 py-2 rounded-full font-bold text-sm shadow-lg animate-bounce">
+              {/* Discount Badge */}
+              <div className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-red-600 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-full font-bold text-xs sm:text-sm shadow-lg animate-pulse">
                 {course.discount}
               </div>
+              {/* Overlay */}
               <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
 
-            {/* Content */}
-            <div className="p-4">
-              <h3 className="font-semibold text-gray-800 mb-3 line-clamp-3 h-24 group-hover:text-blue-600 transition-colors">
+            {/* Content - Flexbox Layout */}
+            <div className="p-3 sm:p-4 flex flex-col gap-2 sm:gap-3">
+              {/* Title */}
+              <h3 className="font-semibold text-sm sm:text-base text-gray-800 line-clamp-2 sm:line-clamp-3 min-h-10 sm:min-h-[72px] group-hover:text-blue-600 transition-colors">
                 {course.title}
               </h3>
 
-              {/* Price */}
-              <div className="flex items-center gap-3 mb-2">
-                <span className="text-2xl font-bold text-red-500">{course.price}</span>
-              </div>
-
-              {/* Old Price */}
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-sm text-gray-400 line-through">{course.oldPrice}</span>
-              </div>
-
-              {/* Students Progress */}
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Users className="w-4 h-4" />
-                  <span>Đã có {course.students} học viên ghi danh hôm nay</span>
+              {/* Price Section - Flexbox */}
+              <div className="flex flex-col gap-1">
+                {/* Current Price */}
+                <div className="flex items-center gap-2">
+                  <span className="text-xl sm:text-2xl font-bold text-red-500">
+                    {course.price}
+                  </span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+
+                {/* Old Price */}
+                <div className="flex items-center">
+                  <span className="text-xs sm:text-sm text-gray-400 line-through">
+                    {course.oldPrice}
+                  </span>
+                </div>
+              </div>
+
+              {/* Students Info - Flexbox */}
+              <div className="flex flex-col gap-2">
+                {/* Students Count */}
+                <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600">
+                  <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                  <span className="line-clamp-1">
+                    Đã có <span className="font-semibold">{course.students}</span> học viên ghi danh
+                  </span>
+                </div>
+                
+                {/* Progress Bar */}
+                <div className="w-full bg-gray-200 rounded-full h-1.5 sm:h-2 overflow-hidden">
                   <div
-                    className="bg-linear-to-r from-red-500 to-pink-500 h-2 rounded-full transition-all duration-1000 ease-out"
+                    className="bg-linear-to-r from-red-500 to-pink-500 h-full rounded-full transition-all duration-1000 ease-out"
                     style={{ width: `${Math.min((course.students / 30) * 100, 100)}%` }}
                   />
                 </div>

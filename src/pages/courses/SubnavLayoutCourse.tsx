@@ -1,5 +1,5 @@
 // src/components/SubNavLayout.jsx
-import React from "react";
+// import React from "react";
 import { NavLink } from "react-router-dom";
 
 /**
@@ -12,23 +12,21 @@ import { NavLink } from "react-router-dom";
  */
 function SubNavLayoutCourse({ title, subtitle, items = [], heroImage, children }: any) {
   return (
-    <div className="min-h-[60vh] bg-linear-to-b from-white to-slate-50">
+    <div className="min-h-[60vh] bg-linear-to-b from-white to-slate-50 mt-4">
       <div className="max-w-6xl mx-auto px-4 py-6">
         {/* Header / Hero */}
-        <div className="flex items-center gap-4">
-          {heroImage && (
-            <img src={heroImage} alt={title} className="w-14 h-14 rounded-md object-cover shadow-sm" />
-          )}
-          <div>
-            <h1 className="text-xl font-semibold text-sky-700">{title}</h1>
-            {subtitle && <p className="text-sm text-slate-500">{subtitle}</p>}
+        <div className="flex flex-col sm:flex-row items-center sm:items-center gap-3 sm:gap-4">
+          {heroImage && <img src={heroImage} alt={title} className="w-16 h-16 sm:w-14 sm:h-14 rounded-md object-cover shadow-sm" />}
+          <div className="text-center sm:text-left">
+            <h1 className="text-xl sm:text-2xl font-semibold text-sky-700">{title}</h1>
+            {subtitle && <p className="text-sm sm:text-base text-slate-500">{subtitle}</p>}
           </div>
         </div>
 
-        <div className="mt-4 grid grid-cols-12 gap-6">
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 mb-4">
           {/* Left: subnav list */}
-          <aside className="col-span-3">
-            <div className="bg-white rounded shadow-sm overflow-hidden border">
+          <aside className="md:col-span-3 mb-4 md:mb-0">
+            <div className="bg-white rounded-lg shadow-sm overflow-hidden border w-full p-1 sm:p-2">
               {items.map((it: any) => (
                 <NavLink
                   key={it.id}
@@ -48,8 +46,8 @@ function SubNavLayoutCourse({ title, subtitle, items = [], heroImage, children }
           </aside>
 
           {/* Right: content */}
-          <main className="col-span-9">
-            <div className="bg-white rounded shadow-sm p-6 border min-h-80">
+          <main className="md:col-span-9">
+            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 border min-h-[300px] sm:min-h-80">
               {children || (
                 <div className="text-slate-600">
                   <p>Chọn một mục ở bên trái để xem chi tiết.</p>

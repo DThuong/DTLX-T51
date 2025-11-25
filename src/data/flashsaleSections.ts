@@ -10,7 +10,7 @@
     },
     {
       id: 2,
-      title: `Khóa học lái xe ô tô "BỔ TÚC TAY LÁI"`,
+      title: `Khóa học lái xe ô tô "BỔ TÚC TAY LÁI" hạng B1`,
       price: "249,000₫",
       oldPrice: "299,000₫",
       discount: "-17%",

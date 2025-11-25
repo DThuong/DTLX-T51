@@ -162,7 +162,7 @@ const SignupDetailForm: React.FC<RegistrationFormProps> = ({ onClose }) => {
                 <button
                     type="button"
                     onClick={handleSubmit}
-                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded-lg uppercase tracking-wider transition-all duration-200 shadow-lg hover:shadow-xl"
+                    className="w-full animate-pulse bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded-lg uppercase tracking-wider transition-all duration-200 shadow-lg hover:shadow-xl"
                 >
                     GỬI CHO CHÚNG TÔI
                 </button>

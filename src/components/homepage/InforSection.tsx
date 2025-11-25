@@ -199,14 +199,14 @@ useEffect(() => {
               </div>
 
               {/* Features List */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 {featuresData.map((feature, index) => (
                   <div
                     key={feature.id}
                     ref={(el) => {
                       if (el) featuresRef.current[index] = el;
                     }}
-                    className="flex flex-column items-center gap-4 p-5 rounded-2xl hover:bg-blue-300 transition-all duration-300 group cursor-pointer border border-transparent hover:border-purple-700"
+                    className="relative flex flex-col items-center gap-4 p-5 rounded-2xl cursor-pointer group border border-transparent hover:border-transparent transition-all duration-300 before:absolute before:-inset-0.5 before:rounded-2xl before:bg-linear-to-r before:from-blue-500 before:to-purple-700 before:opacity-0 before:transition-opacity before:duration-300 group-hover:before:opacity-100"
                   >
                     {/* Icon */}
                     <div className="shrink-0">

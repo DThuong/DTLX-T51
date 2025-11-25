@@ -121,7 +121,7 @@ const CourseCard: React.FC<{ course: Course; index: number }> = ({ course, index
         {/* Price & Button */}
         <div className="flex flex-col gap-3 items-center justify-between mt-auto pt-2 border-t border-gray-200">
           <span className="text-xl font-bold text-blue-600">{course.price}</span>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+          <button className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
             Đăng ký
           </button>
         </div>
@@ -133,10 +133,11 @@ const CourseCard: React.FC<{ course: Course; index: number }> = ({ course, index
 // Main Component
 const CourseUi: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const coursesPerPage = 10;
+  const coursesPerPage = 5;
   const headerRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const paginationRef = useRef<HTMLDivElement>(null);
+  const courseSectionRef = useRef<HTMLDivElement>(null);
 
   // Tính toán pagination
   const totalPages = Math.ceil(coursesData.length / coursesPerPage);
@@ -164,27 +165,36 @@ const CourseUi: React.FC = () => {
   }, []);
 
   // Animation khi chuyển trang
-  const paginate = (pageNumber: number) => {
-    if (gridRef.current) {
-      gsap.to(gridRef.current, {
-        opacity: 0,
-        y: 20,
-        duration: 0.3,
-        onComplete: () => {
-          setCurrentPage(pageNumber);
-          gsap.to(gridRef.current, {
-            opacity: 1,
-            y: 0,
-            duration: 0.3,
+ const paginate = (pageNumber: number) => {
+  if (gridRef.current) {
+    gsap.to(gridRef.current, {
+      opacity: 0,
+      y: 20,
+      duration: 0.3,
+      onComplete: () => {
+        setCurrentPage(pageNumber);
+        gsap.to(gridRef.current, {
+          opacity: 1,
+          y: 0,
+          duration: 0.3,
+        });
+
+        // Scroll lên đầu section khóa học sau khi set page xong
+        if (courseSectionRef.current) {
+          courseSectionRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start', // scroll đến đầu section
           });
-        },
-      });
-    }
-  };
+        }
+      },
+    });
+  }
+};
+      
 
   return (
-    <div className="bg-linear-to-t from-blue-100 to-purple-100 min-h-screen px-4 py-4">
-      <div className="max-w-7xl mx-auto flex flex-col gap-3">
+    <div  className="bg-linear-to-t from-blue-100 to-purple-100 min-h-[100vh - 64px] px-4 py-4">
+      <div ref={courseSectionRef} className="max-w-7xl mx-auto flex flex-col gap-3">
         {/* Header với animation */}
         <div ref={headerRef} className="text-center mb-10">
           <div className="flex items-center justify-center gap-3 mb-3">
