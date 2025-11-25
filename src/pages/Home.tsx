@@ -9,7 +9,7 @@ const Home = () => {
     <div>
       {/* <div className='h-200'>...</div> */}
       {/** Tạm ngưng load car viewer */}
-      {/* <CarViewer /> */}
+      <CarViewer />
       <div className='px-3 sm:px-4 lg:px-6 relative'>
         <div 
           className="absolute inset-0 opacity-100 bg-cover bg-center"
